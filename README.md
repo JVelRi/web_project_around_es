@@ -23,3 +23,12 @@ El botón "+" abre el formulario emergente. `handleCardFormSubmit(evt)` crea la 
 `handleImageClick(name, link)` abre un modal con la imagen y su título como leyenda.
 
 **Heredado:** edición de perfil (precarga y actualiza nombre/descripción) y funciones reutilizables `openModal()` / `closeModal()`.
+
+
+## Tecnologías
+- HTML5
+- CSS3 (metodología BEM)
+- JavaScript
+
+## Demo
+[Ver en GitHub Pages](https://jvelri.github.io/web_project_around_es/)
