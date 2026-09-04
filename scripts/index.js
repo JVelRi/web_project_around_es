@@ -1,3 +1,9 @@
+import { setEventListeners, resetValidation } from "./validate.js";
+import {
+  createEscCloseHandler,
+  setOverlayCloseListeners,
+} from "./popup-close.js";
+
 console.log("El script está conectado correctamente");
 
 const initialCards = [
@@ -57,12 +63,25 @@ const popupCaption = imagePopup.querySelector(".popup__caption");
 const cardTemplate = document.querySelector("#card-template").content;
 const cardsList = document.querySelector(".cards__list");
 
+const popupList = Array.from(document.querySelectorAll(".popup"));
+
+// se usa para cerrar con Esc; closeModal se define más abajo
+const handleEscClose = createEscCloseHandler((modal) => closeModal(modal));
+
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
+  document.addEventListener("keydown", handleEscClose);
 }
 
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", handleEscClose);
+
+  const formElement = modal.querySelector(".popup__form");
+  if (formElement) {
+    formElement.reset();
+    resetValidation(formElement);
+  }
 }
 
 function fillProfileForm() {
@@ -72,6 +91,7 @@ function fillProfileForm() {
 
 function handleOpenEditModal() {
   fillProfileForm();
+  resetValidation(editProfileForm);
   openModal(editPopup);
 }
 
@@ -141,6 +161,7 @@ initialCards.forEach((card) => {
 
 function handleOpenAddCardModal() {
   addCardForm.reset();
+  resetValidation(addCardForm);
   openModal(addCardPopup);
 }
 
@@ -156,7 +177,6 @@ function handleCardFormSubmit(evt) {
   renderCard(placeNameInput.value, linkInput.value, cardsList);
 
   closeModal(addCardPopup);
-  addCardForm.reset();
 }
 
 addCardForm.addEventListener("submit", handleCardFormSubmit);
@@ -164,3 +184,6 @@ addCardForm.addEventListener("submit", handleCardFormSubmit);
 imagePopupCloseButton.addEventListener("click", () => {
   closeModal(imagePopup);
 });
+
+setEventListeners();
+setOverlayCloseListeners(popupList, closeModal);
